@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сайт учителя інформатики</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary-blue: #0078D7;
+      --primary-purple: #6A5ACD;
+      --dark-blue: #005a9f;
+      --dark-purple: #5a4fcf;
+      --light-gray: #f8f9fa;
+      --medium-gray: #e9ecef;
+      --border-gray: #dee2e6;
+      --text-dark: #212529;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text-dark);
+      background: var(--light-gray);
+      overflow-x: hidden;
+    }
+
+    /* Бічне меню */
+    nav {
+      width: 250px;
+      background: var(--primary-blue);
+      padding: 20px;
+      position: relative;
+      left: -250px;
+      transition: left 0.3s ease;
+      flex-shrink: 0;
+      height: 100vh;
+      position: fixed;
+      z-index: 1000;
+      border-right: 1px solid var(--dark-blue);
+    }
+
+    nav.visible {
+      left: 0;
+    }
+
+    nav h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 25px;
+      text-align: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    nav ul { list-style: none; }
+    nav ul li { margin-bottom: 5px; }
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      padding: 12px 15px;
+      display: block;
+      transition: all 0.2s ease;
+      position: relative;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 500;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    /* Кнопка-стрілочка */
+    .arrow-toggle {
+      position: absolute;
+      top: 50%;
+      right: -15px;
+      transform: translateY(-50%) rotate(0deg);
+      background: var(--primary-blue);
+      color: #fff;
+      border: none;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 1001;
+      border: 1px solid var(--dark-blue);
+    }
+
+    .arrow-toggle:hover {
+      background: var(--dark-blue);
+    }
+
+    nav.visible .arrow-toggle {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* Основна частина */
+    main {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      background: var(--light-gray);
+      transition: margin-left 0.3s ease;
+      margin-left: 0;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    main.shifted {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+    }
+
+    /* Заголовок сторінки */
+    .page-header {
+      font-family: 'Poppins', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: var(--text-dark);
+      text-align: left;
+      padding: 20px;
+      background: white;
+      border: 1px solid var(--border-gray);
+      border-left: 4px solid var(--primary-blue);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Контентні картки */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .content-card {
+      background: white;
+      padding: 25px;
+      border: 1px solid var(--border-gray);
+      transition: all 0.2s ease;
+      position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Чергування кольорів для карток */
+    .content-card:nth-child(odd) {
+      border-left: 4px solid var(--primary-blue);
+      background: linear-gradient(135deg, white 0%, #f8fbff 100%);
+    }
+
+    .content-card:nth-child(even) {
+      border-left: 4px solid var(--primary-purple);
+      background: linear-gradient(135deg, white 0%, #faf8ff 100%);
+    }
+
+    .content-card:hover {
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      border-color: #ccc;
+      transform: translateY(-2px);
+    }
+
+    .content-card h3 {
+      margin-bottom: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .content-card p {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    /* Кнопки */
+    .card-button {
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    /* Кольори кнопок відповідно до картки */
+    .content-card:nth-child(odd) .card-button {
+      background: white;
+      color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+
+    .content-card:nth-child(even) .card-button {
+      background: white;
+      color: var(--primary-purple);
+      border-color: var(--primary-purple);
+    }
+
+    .content-card:nth-child(odd) .card-button:hover {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .content-card:nth-child(even) .card-button:hover {
+      background: var(--primary-purple);
+      color: white;
+    }
+
+    /* Стилі для класів */
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .class-card {
+      background: white;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border-gray);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border-left: 4px solid var(--primary-blue);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, white 0%, #f8fbff 100%);
+    }
+
+    .class-card:nth-child(even) {
+      border-left-color: var(--primary-purple);
+      background: linear-gradient(135deg, white 0%, #faf8ff 100%);
+    }
+
+    .class-card:hover {
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      border-color: #ccc;
+      transform: translateY(-2px);
+    }
+
+    .class-card h3 {
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    /* Футер */
+    footer {
+      text-align: center;
+      font-size: 14px;
+      color: white;
+      padding: 20px 0;
+      background: var(--primary-blue);
+      margin-top: auto;
+      border-top: 1px solid var(--dark-blue);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: -250px;
+        z-index: 999;
+      }
+      
+      main.shifted {
+        margin-left: 0;
+        width: 100%;
+      }
+      
+      main {
+        padding: 20px;
+        width: 100%;
+      }
+      
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .class-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      
+      .page-header {
+        font-size: 20px;
+        padding: 15px;
+      }
+    }
+
+    .page-content {
+      display: none;
+    }
+
+    .page-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav id="sidebar">
+    <button class="arrow-toggle" id="menuToggle">❮</button>
+    <h1>Сайт учителя<br>інформатики</h1>
+    <ul>
+      <li><a href="#" class="active" data-page="home">Головна</a></li>
+      <li><a href="#" data-page="teacher">Про вчителя</a></li>
+      <li><a href="#" data-page="classes">5–9 класи</a></li>
+      <li><a href="#" data-page="students">Для учнів</a></li>
+      <li><a href="#" data-page="parents">Для батьків</a></li>
+      <li><a href="#" data-page="contacts">Контакти</a></li>
+    </ul>
+  </nav>
+
+  <main id="mainContent">
+    <!-- Головна сторінка -->
+    <div id="home-page" class="page-content active">
+      <header class="page-header">🎓 Ласкаво просимо на навчальний портал з інформатики</header>
+      
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>📚 Підручники з інформатики</h3>
+          <p>Електронні версії підручників для 5-9 класів, додаткові матеріали та навчальні посібники</p>
+          <a href="#" class="card-button">Перейти до підручників</a>
+        </div>
+
+        <div class="content-card">
+          <h3>📝 Домашні завдання</h3>
+          <p>Актуальні домашні завдання для всіх класів, терміни здачі та рекомендації до виконання</p>
+          <a href="#" class="card-button">Переглянути завдання</a>
+        </div>
+
+        <div class="content-card">
+          <h3>🔬 Лабораторні роботи</h3>
+          <p>Методичні вказівки, зразки звітів та завдання для практичних і лабораторних робіт</p>
+          <a href="#" class="card-button">Дивитися роботи</a>
+        </div>
+
+        <div class="content-card">
+          <h3>📅 Розклад уроків</h3>
+          <p>Актуальний розклад занять, консультацій та додаткових уроків для всіх класів</p>
+          <a href="#" class="card-button">Переглянути розклад</a>
+        </div>
+
+        <div class="content-card">
+          <h3>⭐ Критерії оцінювання</h3>
+          <p>Чіткі критерії оцінювання знань, вимоги до робіт та система оцінок</p>
+          <a href="#" class="card-button">Ознайомитись</a>
+        </div>
+
+        <div class="content-card">
+          <h3>📊 Електронний журнал</h3>
+          <p>Онлайн-доступ до оцінок, відвідуваності та навчальних досягнень учнів</p>
+          <a href="#" class="card-button">Увійти в журнал</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Решта сторінок -->
+    <div id="teacher-page" class="page-content">
+      <header class="page-header">👨‍🏫 Про вчителя</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Біографія</h3>
+          <p>Особиста інформація про вчителя, досвід роботи та професійний шлях</p>
+          <a href="#" class="card-button">Детальніше</a>
+        </div>
+        <div class="content-card">
+          <h3>Освіта</h3>
+          <p>Освітній рівень, кваліфікація та курси підвищення кваліфікації</p>
+          <a href="#" class="card-button">Переглянути</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Повернута вкладка 5-9 класи -->
+    <div id="classes-page" class="page-content">
+      <header class="page-header">📖 5–9 класи</header>
+      <div class="class-grid">
+        <div class="class-card" onclick="showClassMaterials(5)">
+          <h3>5 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(6)">
+          <h3>6 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(7)">
+          <h3>7 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(8)">
+          <h3>8 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(9)">
+          <h3>9 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="students-page" class="page-content">
+      <header class="page-header">🎒 Для учнів</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Домашні завдання</h3>
+          <p>Актуальні домашні завдання для всіх класів</p>
+          <a href="#" class="card-button">Переглянути</a>
+        </div>
+        <div class="content-card">
+          <h3>Лабораторні роботи</h3>
+          <p>Практичні та лабораторні роботи</p>
+          <a href="#" class="card-button">Дивитися</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="parents-page" class="page-content">
+      <header class="page-header">👨‍👩‍👧‍👦 Для батьків</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Критерії оцінювання</h3>
+          <p>Вимоги до знань учнів та система оцінювання</p>
+          <a href="#" class="card-button">Ознайомитись</a>
+        </div>
+        <div class="content-card">
+          <h3>Електронний журнал</h3>
+          <p>Доступ до оцінок та відвідуваності</p>
+          <a href="#" class="card-button">Перейти</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Контакти -->
+    <div id="contacts-page" class="page-content">
+      <header class="page-header">📞 Контакти</header>
+      
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>📧 Електронна пошта</h3>
+          <p>kulibabaandrij0@gmail.com</p>
+          <a href="mailto:kulibabaandrij0@gmail.com" class="card-button">Написати листа</a>
+        </div>
+        
+        <div class="content-card">
+          <h3>✈️ Telegram</h3>
+          <p>@Andrij7898</p>
+          <a href="https://t.me/Andrij7898" class="card-button" target="_blank">Написати в Telegram</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 Кулібаба А. Б. | Всі права захищені
+    </footer>
+  </main>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('menuToggle');
+    const main = document.getElementById('mainContent');
+    const navLinks = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page-content');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('visible');
+      main.classList.toggle('shifted');
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = link.getAttribute('data-page');
+        
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        pages.forEach(page => {
+          page.classList.remove('active');
+          if (page.id === `${targetPage}-page`) {
+            page.classList.add('active');
+          }
+        });
+      });
+    });
+
+    function showClassMaterials(grade) {
+      alert(`Матеріали для ${grade} класу:\n• Підручник\n• Презентації\n• Конспекти\n• Тести`);
+    }
+
+    // Закриття меню при кліку на контент (для мобільних)
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && 
+          !sidebar.contains(e.target) && 
+          !toggleBtn.contains(e.target) &&
+          sidebar.classList.contains('visible')) {
+        sidebar.classList.remove('visible');
+        main.classList.remove('shifted');
+      }
+    });
+  </script>
+</body>
+</html>
