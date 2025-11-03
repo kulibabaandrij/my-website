@@ -212,6 +212,43 @@
       font-size: 14px;
     }
 
+    /* Стилі для класів */
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .class-card {
+      background: white;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border-gray);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border-left: 4px solid var(--primary-blue);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, white 0%, #f8fbff 100%);
+    }
+
+    .class-card:nth-child(even) {
+      border-left-color: var(--primary-purple);
+      background: linear-gradient(135deg, white 0%, #faf8ff 100%);
+    }
+
+    .class-card:hover {
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      border-color: #ccc;
+      transform: translateY(-2px);
+    }
+
+    .class-card h3 {
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
     .card-button {
       border: none;
       padding: 10px 20px;
@@ -283,6 +320,10 @@
         grid-template-columns: 1fr;
       }
       
+      .class-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      
       .page-header {
         font-size: 20px;
         padding: 15px;
@@ -313,7 +354,7 @@
   </nav>
 
   <main id="mainContent">
-    <!-- Оновлена головна сторінка -->
+    <!-- Головна сторінка -->
     <div id="home-page" class="page-content active">
       <header class="page-header">🎓 Ласкаво просимо на навчальний портал з інформатики</header>
       
@@ -364,8 +405,102 @@
       </div>
     </div>
 
-    <!-- Решта сторінок залишаються без змін -->
-    <!-- ... -->
+    <!-- Про вчителя -->
+    <div id="teacher-page" class="page-content">
+      <header class="page-header">👨‍🏫 Про вчителя</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Біографія</h3>
+          <p>Особиста інформація про вчителя, досвід роботи та професійний шлях</p>
+          <a href="#" class="card-button">Детальніше</a>
+        </div>
+        <div class="content-card">
+          <h3>Освіта</h3>
+          <p>Освітній рівень, кваліфікація та курси підвищення кваліфікації</p>
+          <a href="#" class="card-button">Переглянути</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5-9 класи -->
+    <div id="classes-page" class="page-content">
+      <header class="page-header">📖 5–9 класи</header>
+      <div class="class-grid">
+        <div class="class-card" onclick="showClassMaterials(5)">
+          <h3>5 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(6)">
+          <h3>6 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(7)">
+          <h3>7 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(8)">
+          <h3>8 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+        <div class="class-card" onclick="showClassMaterials(9)">
+          <h3>9 клас</h3>
+          <p>Підручник, презентації, тести</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Для учнів -->
+    <div id="students-page" class="page-content">
+      <header class="page-header">🎒 Для учнів</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Домашні завдання</h3>
+          <p>Актуальні домашні завдання для всіх класів</p>
+          <a href="#" class="card-button">Переглянути</a>
+        </div>
+        <div class="content-card">
+          <h3>Лабораторні роботи</h3>
+          <p>Практичні та лабораторні роботи</p>
+          <a href="#" class="card-button">Дивитися</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Для батьків -->
+    <div id="parents-page" class="page-content">
+      <header class="page-header">👨‍👩‍👧‍👦 Для батьків</header>
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>Критерії оцінювання</h3>
+          <p>Вимоги до знань учнів та система оцінювання</p>
+          <a href="#" class="card-button">Ознайомитись</a>
+        </div>
+        <div class="content-card">
+          <h3>Електронний журнал</h3>
+          <p>Доступ до оцінок та відвідуваності</p>
+          <a href="#" class="card-button">Перейти</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Контакти -->
+    <div id="contacts-page" class="page-content">
+      <header class="page-header">📞 Контакти</header>
+      
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>📧 Електронна пошта</h3>
+          <p>kulibabaandrij0@gmail.com</p>
+          <a href="mailto:kulibabaandrij0@gmail.com" class="card-button">Написати листа</a>
+        </div>
+        
+        <div class="content-card">
+          <h3>✈️ Telegram</h3>
+          <p>@Andrij7898</p>
+          <a href="https://t.me/Andrij7898" class="card-button" target="_blank">Написати в Telegram</a>
+        </div>
+      </div>
+    </div>
 
     <footer>
       &copy; 2025 Кулібаба А. Б. | Всі права захищені
